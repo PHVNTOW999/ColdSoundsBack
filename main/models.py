@@ -125,7 +125,7 @@ class Single(models.Model):
         on_delete=models.CASCADE,
     )
 
-    Cover = models.ImageField(
+    cover = models.ImageField(
         null=True,
         blank=True,
         verbose_name="Cover"

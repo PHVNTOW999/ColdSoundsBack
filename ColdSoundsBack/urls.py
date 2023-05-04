@@ -14,8 +14,11 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
+
+from ColdSoundsBack import settings
 from main.views import *
 
 urlpatterns = [
@@ -23,4 +26,4 @@ urlpatterns = [
     path('api/artists/', ArtistView.as_view(), name='artists_list'),
     path('api/albums/', AlbumView.as_view(), name='albums_list'),
     path('api/singles/', SingleView.as_view(), name='singles_list'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,5 +1,6 @@
 import uuid
 
+from django.core.validators import FileExtensionValidator
 from django.db import models
 
 class Artist(models.Model):
@@ -22,22 +23,6 @@ class Artist(models.Model):
     class Meta:
         verbose_name='Artist'
         verbose_name_plural='Artists'
-
-    def __str__(self):
-        return self.name
-
-class Format(models.Model):
-
-    name = models.CharField(
-        max_length=155,
-        null=False,
-        blank=False,
-        verbose_name="Name"
-    )
-
-    class Meta:
-        verbose_name='DropType'
-        verbose_name_plural='DropTypes'
 
     def __str__(self):
         return self.name
@@ -67,14 +52,6 @@ class Album(models.Model):
         blank=True,
         verbose_name="Featuring Artists"
     )
-
-    format = models.ForeignKey(
-        Format,
-        null=False,
-        blank=False,
-        verbose_name="Drop Type",
-        on_delete=models.CASCADE,
-    )
     
     cover = models.ImageField(
         null=True,
@@ -102,6 +79,12 @@ class Single(models.Model):
         verbose_name="Name"
     )
 
+    file = models.FileField(
+        validators=[FileExtensionValidator(['mp3', 'wav'])],
+        upload_to='audio',
+        verbose_name='Single File'
+    )
+
     artists = models.ManyToManyField(
         Artist,
         null=False,
@@ -117,18 +100,11 @@ class Single(models.Model):
         verbose_name="Featuring Artists"
     )
 
-    format = models.ForeignKey(
-        Format,
-        null=False,
-        blank=False,
-        verbose_name="Drop Type",
-        on_delete=models.CASCADE,
-    )
-
     cover = models.ImageField(
-        null=True,
+        validators=[FileExtensionValidator(['png', 'jpg'])],
+        upload_to='img',
         blank=True,
-        verbose_name="Cover"
+        verbose_name='Single Cover',
     )
 
     date = models.DateField()

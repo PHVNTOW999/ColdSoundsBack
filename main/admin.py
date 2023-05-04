@@ -9,11 +9,11 @@ class ArtistAdmin(admin.ModelAdmin):
         'uuid'
     )
 
-@admin.register(models.Format)
-class FormatAdmin(admin.ModelAdmin):
-    list_display = (
-        'name',
-    )
+# @admin.register(models.Format)
+# class FormatAdmin(admin.ModelAdmin):
+#     list_display = (
+#         'name',
+#     )
 
 @admin.register(models.Album)
 class AlbumAdmin(admin.ModelAdmin):

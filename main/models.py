@@ -53,7 +53,7 @@ class Single(models.Model):
         related_name="single_artists"
     )
 
-    feat = models.ManyToManyField(
+    feats = models.ManyToManyField(
         Artist,
         null=True,
         blank=True,
@@ -61,12 +61,20 @@ class Single(models.Model):
     )
 
     file = models.FileField(
+        null=False,
+        blank=False,
         validators=[FileExtensionValidator(['mp3', 'wav'])],
         upload_to='audio',
         verbose_name='Audio File'
     )
 
-    date = models.DateField()
+    date = models.DateField(
+        null=True,
+        blank=True,
+    )
+
+    # format
+    # position in album
 
     class Meta:
         verbose_name = 'Single'
@@ -100,7 +108,7 @@ class Album(models.Model):
         related_name="album_artists"
     )
 
-    feat = models.ManyToManyField(
+    feats = models.ManyToManyField(
         Artist,
         null=True,
         blank=True,

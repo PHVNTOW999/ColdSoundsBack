@@ -3,6 +3,8 @@ import uuid
 from django.core.validators import FileExtensionValidator
 from django.db import models
 
+import main
+
 
 class Artist(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid1(), editable=False)
@@ -73,8 +75,19 @@ class Single(models.Model):
         blank=True,
     )
 
-    # format
-    # position in album
+    album = models.ForeignKey(
+        on_delete=models.CASCADE,
+        to='main.Album',
+        null=True,
+        blank=True,
+        verbose_name="Album (optional)",
+    )
+
+    position = models.IntegerField(
+        null=True,
+        blank=True,
+        verbose_name="Position in album (optional)"
+    )
 
     class Meta:
         verbose_name = 'Single'
@@ -82,7 +95,6 @@ class Single(models.Model):
 
     def __str__(self):
         return self.name
-
 
 class Album(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
@@ -128,6 +140,9 @@ class Album(models.Model):
     class Meta:
         verbose_name = 'Album'
         verbose_name_plural = 'Albums'
+
+    # def sortFiles(self):
+    #     return self.files.order_by('position')
 
     def __str__(self):
         return self.name

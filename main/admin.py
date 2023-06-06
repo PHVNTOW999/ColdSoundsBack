@@ -26,5 +26,7 @@ class AlbumAdmin(admin.ModelAdmin):
 class SingleAdmin(admin.ModelAdmin):
     list_display = (
         'name',
+        'album',
+        'position',
         'uuid'
     )

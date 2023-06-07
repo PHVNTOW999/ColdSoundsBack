@@ -92,6 +92,7 @@ class Single(models.Model):
     class Meta:
         verbose_name = 'Single'
         verbose_name_plural = 'Singles'
+        ordering = ['position']
 
     def __str__(self):
         return self.name
@@ -140,9 +141,6 @@ class Album(models.Model):
     class Meta:
         verbose_name = 'Album'
         verbose_name_plural = 'Albums'
-
-    # def sortFiles(self):
-    #     return self.files.order_by('position')
 
     def __str__(self):
         return self.name

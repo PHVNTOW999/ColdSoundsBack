@@ -8,13 +8,16 @@ from rest_framework.views import APIView
 from .serializer import *
 from .models import *
 
+
 # auth
 
 class RegView(APIView):
     def post(self, request):
+        if User.objects.filter(email=request.data['email']):
+            raise AuthenticationFailed('This email has already been registered!')
 
-        if not request.data['password']==request.data['password2']:
-            raise AuthenticationFailed('Incorrect password')
+        if request.data['password'] != request.data['password2']:
+            raise AuthenticationFailed('Password mismatch!')
 
         else:
 
@@ -26,7 +29,8 @@ class RegView(APIView):
 
             user.save()
 
-            return Response('Registration is done!')
+            return Response(f"Registration is done! Your welcome - {user.email}")
+
 
 class LoginView(APIView):
     def post(self, request):
@@ -61,9 +65,11 @@ class ArtistView(generics.ListAPIView):
     queryset = Artist.objects.all()
     serializer_class = ArtistSerializer
 
+
 class AlbumView(generics.ListAPIView):
     queryset = Album.objects.all()
     serializer_class = AlbumSerializer
+
 
 class SingleView(generics.ListAPIView):
     queryset = Single.objects.all()

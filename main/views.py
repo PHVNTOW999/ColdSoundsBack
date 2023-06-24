@@ -50,7 +50,6 @@ class LoginView(APIView):
             raise AuthenticationFailed('Incorrect password')
 
         else:
-
             payload = {
                 "id": user.id,
                 "email": user.email,
@@ -58,6 +57,10 @@ class LoginView(APIView):
                 "last_login": user.last_login,
                 "reg_date": user.date_joined.strftime("%Y-%m-%d %H:%M:%S")
             }
+
+            login(request, user)
+
+            # user = authenticate(request, username=email, password=password)
 
             return JsonResponse(payload)
 

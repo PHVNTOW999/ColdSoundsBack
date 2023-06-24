@@ -1,5 +1,8 @@
-from django.contrib.auth import get_user_model
+import datetime
+
+from django.contrib.auth import get_user_model, login, authenticate
 from django.contrib.auth.models import User
+from django.http import HttpResponse, JsonResponse
 from rest_framework import generics
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.response import Response
@@ -53,10 +56,10 @@ class LoginView(APIView):
                 "email": user.email,
                 "is_admin": user.is_staff,
                 "last_login": user.last_login,
-                "reg_date": user.date_joined
+                "reg_date": user.date_joined.strftime("%Y-%m-%d %H:%M:%S")
             }
 
-            return Response(payload)
+            return JsonResponse(payload)
 
 
 # main

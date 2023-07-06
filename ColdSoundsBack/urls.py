@@ -27,7 +27,8 @@ urlpatterns = [
     path('api/auth/log/', LoginView.as_view(), name='login'),
     path('api/auth/reg/', RegView.as_view(), name='reg'),
     # main
-    path('api/artists/', ArtistView.as_view(), name='artists_list'),
+    path('api/artists/', ArtistsListView.as_view(), name='artists_list'),
+    path('api/artist/<uuid:uuid>/', ArtistView.as_view(), name='artist'),
     path('api/albums/', AlbumView.as_view(), name='albums_list'),
     path('api/singles/', SingleView.as_view(), name='singles_list'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

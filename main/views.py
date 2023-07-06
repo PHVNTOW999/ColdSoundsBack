@@ -1,8 +1,6 @@
-import datetime
-
-from django.contrib.auth import get_user_model, login, authenticate
+from django.contrib.auth import get_user_model, login
 from django.contrib.auth.models import User
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from rest_framework import generics
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.response import Response
@@ -67,10 +65,17 @@ class LoginView(APIView):
 
 # main
 
-class ArtistView(generics.ListAPIView):
+class ArtistsListView(generics.ListAPIView):
     queryset = Artist.objects.all()
     serializer_class = ArtistSerializer
 
+
+class ArtistView(generics.ListAPIView):
+    def get(self, request, *args, **kwargs):
+        queryset = Artist.objects.get(uuid=self.kwargs['uuid'])
+        serializer_class = ArtistSerializer(queryset)
+
+        return JsonResponse(serializer_class.data)
 
 class AlbumView(generics.ListAPIView):
     queryset = Album.objects.all()

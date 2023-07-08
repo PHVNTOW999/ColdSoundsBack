@@ -9,12 +9,6 @@ class ArtistAdmin(admin.ModelAdmin):
         'uuid'
     )
 
-# @admin.register(models.Format)
-# class FormatAdmin(admin.ModelAdmin):
-#     list_display = (
-#         'name',
-#     )
-
 @admin.register(models.Album)
 class AlbumAdmin(admin.ModelAdmin):
     list_display = (
@@ -22,11 +16,21 @@ class AlbumAdmin(admin.ModelAdmin):
         'uuid'
     )
 
+
 @admin.register(models.Single)
 class SingleAdmin(admin.ModelAdmin):
     list_display = (
         'name',
         'album',
         'position',
+        'uuid'
+    )
+
+
+@admin.register(models.Playlist)
+class PlaylistAdmin(admin.ModelAdmin):
+    list_display = (
+        'name',
+        'user',
         'uuid'
     )

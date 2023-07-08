@@ -1,7 +1,9 @@
 import uuid
 
+from django.contrib.auth.models import User
 from django.core.validators import FileExtensionValidator
 from django.db import models
+from django.db.models import CASCADE
 
 import main
 
@@ -76,10 +78,10 @@ class Single(models.Model):
     )
 
     album = models.ForeignKey(
-        on_delete=models.CASCADE,
         to='main.Album',
         null=True,
         blank=True,
+        on_delete=models.CASCADE,
         verbose_name="Album (optional)",
     )
 
@@ -96,6 +98,7 @@ class Single(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Album(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
@@ -141,6 +144,48 @@ class Album(models.Model):
     class Meta:
         verbose_name = 'Album'
         verbose_name_plural = 'Albums'
+
+    def __str__(self):
+        return self.name
+
+
+class Playlist(models.Model):
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
+
+    name = models.CharField(
+        max_length=155,
+        null=False,
+        blank=False,
+        verbose_name="Name"
+    )
+
+    user = models.ForeignKey(
+        User,
+        null=False,
+        blank=False,
+        unique=False,
+        on_delete=CASCADE
+    )
+
+    cover = models.ImageField(
+        null=True,
+        blank=True,
+        verbose_name="Cover"
+    )
+
+    singles = models.ManyToManyField(
+        Single,
+        null=False,
+        blank=False,
+        verbose_name="Singles",
+        related_name="playlist_singles",
+    )
+
+    date = models.DateField()
+
+    class Meta:
+        verbose_name = 'Playlist'
+        verbose_name_plural = 'Playlist'
 
     def __str__(self):
         return self.name

@@ -1,5 +1,4 @@
 from django.contrib.auth import get_user_model, login
-from django.contrib.auth.models import User
 from django.http import JsonResponse
 from rest_framework import generics
 from rest_framework.exceptions import AuthenticationFailed
@@ -77,6 +76,7 @@ class ArtistView(generics.ListAPIView):
 
         return JsonResponse(serializer_class.data)
 
+
 class AlbumView(generics.ListAPIView):
     queryset = Album.objects.all()
     serializer_class = AlbumSerializer
@@ -85,3 +85,16 @@ class AlbumView(generics.ListAPIView):
 class SingleView(generics.ListAPIView):
     queryset = Single.objects.all()
     serializer_class = SingleSerializer
+
+
+class AllPlaylistsView(generics.ListAPIView):
+    queryset = Playlist.objects.all()
+    serializer_class = PlaylistSerializer
+
+
+class UserPlaylistView(generics.ListAPIView):
+    def get(self, request, *args, **kwargs):
+        queryset = Playlist.objects.filter(user__username=self.kwargs['email'])
+        serializer_class = PlaylistSerializer(queryset, many=True)
+
+        return Response(serializer_class.data)

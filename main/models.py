@@ -1,5 +1,6 @@
 import uuid
 
+import media as media
 from django.contrib.auth.models import User
 from django.core.validators import FileExtensionValidator
 from django.db import models
@@ -64,7 +65,7 @@ class Single(models.Model):
         verbose_name="Featuring Artists"
     )
 
-    file = models.FileField(
+    files = models.FileField(
         null=False,
         blank=False,
         validators=[FileExtensionValidator(['mp3', 'wav'])],
@@ -170,10 +171,10 @@ class Playlist(models.Model):
     cover = models.ImageField(
         null=True,
         blank=True,
-        verbose_name="Cover"
+        verbose_name="Cover",
     )
 
-    singles = models.ManyToManyField(
+    files = models.ManyToManyField(
         Single,
         null=False,
         blank=False,
@@ -185,7 +186,7 @@ class Playlist(models.Model):
 
     class Meta:
         verbose_name = 'Playlist'
-        verbose_name_plural = 'Playlist'
+        verbose_name_plural = 'Playlists'
 
     def __str__(self):
         return self.name

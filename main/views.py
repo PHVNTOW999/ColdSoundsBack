@@ -64,17 +64,36 @@ class LoginView(APIView):
 
 # main
 
-class ArtistsListView(generics.ListAPIView):
-    queryset = Artist.objects.all()
-    serializer_class = ArtistSerializer
-
-
 class ArtistView(generics.ListAPIView):
     def get(self, request, *args, **kwargs):
         queryset = Artist.objects.get(uuid=self.kwargs['uuid'])
         serializer_class = ArtistSerializer(queryset)
 
         return JsonResponse(serializer_class.data)
+
+
+class UserPlaylistView(generics.ListAPIView):
+    def get(self, request, *args, **kwargs):
+        queryset = Playlist.objects.filter(user__username=self.kwargs['email'])
+        serializer_class = PlaylistSerializer(queryset, many=True, context={'request': request})
+
+        return JsonResponse(serializer_class.data, safe=False)
+
+
+class UserPlaylistUpdate(generics.ListAPIView):
+    def update(self, request, *args, **kwargs):
+        queryset = Playlist.objects.get(uuid=self.kwargs['uuid'])
+        queryset.name = self.kwargs['name']
+        # serializer_class = PlaylistSerializer(queryset)
+
+        # return JsonResponse(serializer_class.data)
+
+
+# View
+
+class ArtistsListView(generics.ListAPIView):
+    queryset = Artist.objects.all()
+    serializer_class = ArtistSerializer
 
 
 class AlbumView(generics.ListAPIView):
@@ -90,11 +109,3 @@ class SingleView(generics.ListAPIView):
 class AllPlaylistsView(generics.ListAPIView):
     queryset = Playlist.objects.all()
     serializer_class = PlaylistSerializer
-
-
-class UserPlaylistView(generics.ListAPIView):
-    def get(self, request, *args, **kwargs):
-        queryset = Playlist.objects.filter(user__username=self.kwargs['email'])
-        serializer_class = PlaylistSerializer(queryset, many=True)
-
-        return Response(serializer_class.data)

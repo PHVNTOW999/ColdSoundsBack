@@ -1,6 +1,7 @@
 import uuid
 
 import media as media
+import mutagen
 from django.contrib.auth.models import User
 from django.core.validators import FileExtensionValidator
 from django.db import models
@@ -91,6 +92,12 @@ class Single(models.Model):
         blank=True,
         verbose_name="Position in album (optional)"
     )
+
+    # duration = models.FloatField(
+    #     blank=True,
+    #     null=True,
+    #     verbose_name="Audio duration"
+    # )
 
     class Meta:
         verbose_name = 'Single'

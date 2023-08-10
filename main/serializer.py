@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import *
+import mutagen
 
 
 class ArtistSerializer(serializers.ModelSerializer):
@@ -19,6 +20,12 @@ class AlbumSerializer(serializers.ModelSerializer):
 
 
 class SingleSerializer(serializers.ModelSerializer):
+    def some_pre_save_receiver(sender, instance):
+        audio_info = mutagen.File(instance.files).info
+        return audio_info
+
+    test1 = serializers.CharField(default=some_pre_save_receiver)
+
     format = serializers.CharField(default='Single')
 
     class Meta:

@@ -20,11 +20,11 @@ class AlbumSerializer(serializers.ModelSerializer):
 
 
 class SingleSerializer(serializers.ModelSerializer):
-    def some_pre_save_receiver(sender, instance):
-        audio_info = mutagen.File(instance.files).info
-        return audio_info
+    # def some_pre_save_receiver(sender, instance):
+    #     audio_info = mutagen.File(instance.files).info
+    #     return audio_info
 
-    test1 = serializers.CharField(default=some_pre_save_receiver)
+    # test1 = serializers.CharField(default=some_pre_save_receiver)
 
     format = serializers.CharField(default='Single')
 

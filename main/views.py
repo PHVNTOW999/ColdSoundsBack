@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.auth import get_user_model, login
 from django.http import JsonResponse
 from rest_framework import generics
@@ -80,13 +82,37 @@ class UserPlaylistView(generics.ListAPIView):
         return JsonResponse(serializer_class.data, safe=False)
 
 
-class UserPlaylistUpdate(generics.ListAPIView):
-    def update(self, request, *args, **kwargs):
+class UserPlaylistUpdate(generics.UpdateAPIView):
+    def get(self, request, *args, **kwargs):
         queryset = Playlist.objects.get(uuid=self.kwargs['uuid'])
-        queryset.name = self.kwargs['name']
-        # serializer_class = PlaylistSerializer(queryset)
+        serializer_class = PlaylistSerializer(queryset)
 
-        # return JsonResponse(serializer_class.data)
+        return JsonResponse(serializer_class.data, safe=False)
+
+    def patch(self, request, *args, **kwargs):
+        queryset = Playlist.objects.get(uuid=self.kwargs['uuid'])
+
+        if request.data['name']:
+            queryset.name = request.data['name']
+
+        if request.data['cover']:
+            queryset.cover = request.data['cover']
+
+        if request.data['date']:
+            queryset.date = request.data['date']
+
+        # if request.data['files']:
+            # new_list = request.data['files']
+            # queryset.files.set(new_list)
+            # queryset.files = json.dumps(request.data['files'])
+
+        # queryset = request.data
+
+        queryset.save()
+
+        serializer_class = PlaylistSerializer(queryset)
+
+        return JsonResponse(serializer_class.data, safe=False)
 
 
 # View

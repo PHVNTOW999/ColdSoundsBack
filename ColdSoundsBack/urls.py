@@ -2,7 +2,7 @@
 URL configuration for ColdSoundsBack project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/4.2/topics/http/urls/
+    https://docs.djangoproject.com/en/4.2/topics/http/http://127.0.0.1:8000/api/update-playlist/1cf978a6-f572-4dd5-b37f-05c3ca388b5e/urls/
 Examples:
 Function views
     1. Add an import:  from my_app import views
@@ -32,6 +32,6 @@ urlpatterns = [
     path('api/albums/', AlbumView.as_view(), name='albums_list'),
     path('api/singles/', SingleView.as_view(), name='singles_list'),
     path('api/playlists/', AllPlaylistsView.as_view(), name='playlists_list'),
-    path('api/user-playlist/<str:email>/', UserPlaylistView.as_view(), name='user_playlist_list'),
-    path('api/update-playlist/<uuid:uuid>/', UserPlaylistUpdate.as_view(), name='user_playlist_list'),
+    path('api/user-playlist-list/<str:email>/', UserPlaylistView.as_view(), name='user_playlist_list'),
+    path('api/update-playlist/<uuid:uuid>/', UserPlaylistUpdate.as_view(), name='edit_user_playlist'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

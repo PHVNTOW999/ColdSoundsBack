@@ -59,8 +59,6 @@ class LoginView(APIView):
 
             login(request, user)
 
-            # user = authenticate(request, username=email, password=password)
-
             return JsonResponse(payload)
 
 
@@ -101,12 +99,13 @@ class UserPlaylistUpdate(generics.UpdateAPIView):
         if request.data['date']:
             queryset.date = request.data['date']
 
-        # if request.data['files']:
-            # new_list = request.data['files']
-            # queryset.files.set(new_list)
-            # queryset.files = json.dumps(request.data['files'])
+        if request.data['files']:
+            new_list = []
 
-        # queryset = request.data
+            for el in request.data['files']:
+                new_list.append(Single.objects.get(uuid=el['uuid']))
+
+            queryset.files.set(new_list)
 
         queryset.save()
 

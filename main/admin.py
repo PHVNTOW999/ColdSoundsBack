@@ -34,3 +34,11 @@ class PlaylistAdmin(admin.ModelAdmin):
         'user',
         'uuid'
     )
+
+
+@admin.register(models.UploadImgFile)
+class UploadImgFileAdmin(admin.ModelAdmin):
+    list_display = (
+        'uuid',
+        'file'
+    )

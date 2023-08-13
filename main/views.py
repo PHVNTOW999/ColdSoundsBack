@@ -1,12 +1,9 @@
-import json
-
 from django.contrib.auth import get_user_model, login
 from django.http import JsonResponse
 from rest_framework import generics
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
 from .serializer import *
 from .models import *
 
@@ -96,9 +93,6 @@ class UserPlaylistUpdate(generics.UpdateAPIView):
         if request.data['cover']:
             queryset.cover = request.data['cover']
 
-        if request.data['date']:
-            queryset.date = request.data['date']
-
         if request.data['files']:
             new_list = []
 
@@ -111,7 +105,7 @@ class UserPlaylistUpdate(generics.UpdateAPIView):
 
         serializer_class = PlaylistSerializer(queryset)
 
-        return JsonResponse(serializer_class.data, safe=False)
+        return JsonResponse(serializer_class.data)
 
 
 # View
@@ -134,3 +128,8 @@ class SingleView(generics.ListAPIView):
 class AllPlaylistsView(generics.ListAPIView):
     queryset = Playlist.objects.all()
     serializer_class = PlaylistSerializer
+
+
+class UploadImgFileView(generics.ListAPIView):
+    queryset = Playlist.objects.all()
+    serializer_class = UploadImgFileSerializer

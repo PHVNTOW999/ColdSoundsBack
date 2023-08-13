@@ -1,13 +1,34 @@
 import uuid
-
-import media as media
-import mutagen
 from django.contrib.auth.models import User
 from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.db.models import CASCADE
 
-import main
+
+class UploadImgFile(models.Model):
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid1(), editable=False)
+
+    path = models.CharField(
+        max_length=155,
+        null=False,
+        blank=False,
+        verbose_name="Path"
+    )
+
+    file = models.FileField(
+        null=False,
+        blank=False,
+        validators=[FileExtensionValidator(['mp3', 'jpg', 'png'])],
+        upload_to='all',
+        verbose_name='Files'
+    )
+
+    class Meta:
+        verbose_name = 'Image file'
+        verbose_name_plural = 'Image files'
+
+    def __str__(self):
+        return self.path
 
 
 class Artist(models.Model):

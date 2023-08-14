@@ -36,8 +36,8 @@ class PlaylistAdmin(admin.ModelAdmin):
     )
 
 
-@admin.register(models.UploadImgFile)
-class UploadImgFileAdmin(admin.ModelAdmin):
+@admin.register(models.UploadFile)
+class UploadFilesAdmin(admin.ModelAdmin):
     list_display = (
         'uuid',
         'file'

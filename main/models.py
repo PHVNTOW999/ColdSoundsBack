@@ -5,30 +5,31 @@ from django.db import models
 from django.db.models import CASCADE
 
 
-class UploadImgFile(models.Model):
+class UploadFile(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid1(), editable=False)
 
-    path = models.CharField(
+    req = models.CharField(
+        default="file",
         max_length=155,
         null=False,
         blank=False,
-        verbose_name="Path"
+        verbose_name="Req"
     )
 
     file = models.FileField(
         null=False,
         blank=False,
-        validators=[FileExtensionValidator(['mp3', 'jpg', 'png'])],
-        upload_to='all',
-        verbose_name='Files'
+        # validators=[FileExtensionValidator(['mp3', 'jpg', 'png'])],
+        upload_to='files',
+        verbose_name='File'
     )
 
     class Meta:
-        verbose_name = 'Image file'
-        verbose_name_plural = 'Image files'
+        verbose_name = 'File'
+        verbose_name_plural = 'Files'
 
     def __str__(self):
-        return self.path
+        return self.req
 
 
 class Artist(models.Model):

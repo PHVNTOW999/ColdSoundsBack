@@ -1,3 +1,4 @@
+from django.forms import forms
 from rest_framework import serializers
 from .models import *
 
@@ -36,10 +37,9 @@ class PlaylistSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class UploadImgFileSerializer(serializers.ModelSerializer):
-    # path = serializers.CharField(default='Playlist')
+class UploadFileSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = UploadImgFile
+        model = UploadFile
         depth = 1
         fields = "__all__"

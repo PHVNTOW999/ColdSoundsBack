@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model, login
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from rest_framework import generics
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.response import Response
@@ -32,7 +32,8 @@ class RegView(APIView):
 
 
 class LoginView(APIView):
-    def post(self, request):
+    @staticmethod
+    def post(request):
 
         email = request.data['email']
         password = request.data['password']
@@ -108,7 +109,29 @@ class UserPlaylistUpdate(generics.UpdateAPIView):
         return JsonResponse(serializer_class.data)
 
 
-# View
+class UploadFileCRUD(generics.UpdateAPIView):
+    # parser_classes = (FormParser, )
+
+    def get(self, request, *args, **kwargs):
+        queryset = UploadFile.objects.get(uuid=self.kwargs['uuid'])
+        serializer_class = UploadFileSerializer(queryset)
+
+        return JsonResponse(serializer_class.data, safe=False)
+
+    def post(self, request, *args, **kwargs):
+        if request.FILES:
+            uploaded_file = "request.get('file')"
+            print('gg', request.get('file'))
+            return HttpResponse(uploaded_file)
+        else:
+            return HttpResponse("Err")
+        # queryset = UploadFile.objects.create(file=uploaded_file)
+        # queryset.save()
+        #
+        # serializer_class = UploadFileSerializer(queryset)
+        #
+        # return JsonResponse(serializer_class.data)
+
 
 class ArtistsListView(generics.ListAPIView):
     queryset = Artist.objects.all()
@@ -130,6 +153,6 @@ class AllPlaylistsView(generics.ListAPIView):
     serializer_class = PlaylistSerializer
 
 
-class UploadImgFileView(generics.ListAPIView):
-    queryset = Playlist.objects.all()
-    serializer_class = UploadImgFileSerializer
+class UploadFilesListView(generics.ListAPIView):
+    queryset = UploadFile.objects.all()
+    serializer_class = UploadFileSerializer

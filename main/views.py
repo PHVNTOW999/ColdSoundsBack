@@ -125,12 +125,12 @@ class UploadFileCRUD(generics.UpdateAPIView):
             return HttpResponse(uploaded_file)
         else:
             return HttpResponse("Err")
-        # queryset = UploadFile.objects.create(file=uploaded_file)
-        # queryset.save()
-        #
-        # serializer_class = UploadFileSerializer(queryset)
-        #
-        # return JsonResponse(serializer_class.data)
+        queryset = UploadFile.objects.create(file=uploaded_file)
+        queryset.save()
+
+        serializer_class = UploadFileSerializer(queryset)
+
+        return JsonResponse(serializer_class.data)
 
 
 class ArtistsListView(generics.ListAPIView):

@@ -38,7 +38,6 @@ class PlaylistSerializer(serializers.ModelSerializer):
 
 
 class UploadFileSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = UploadFile
         depth = 1

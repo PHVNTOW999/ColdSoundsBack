@@ -6,7 +6,7 @@ from django.db.models import CASCADE
 
 
 class UploadFile(models.Model):
-    uuid = models.UUIDField(primary_key=True, default=uuid.uuid1(), editable=False)
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
 
     req = models.CharField(
         default="file",
@@ -19,7 +19,7 @@ class UploadFile(models.Model):
     file = models.FileField(
         null=False,
         blank=False,
-        # validators=[FileExtensionValidator(['mp3', 'jpg', 'png'])],
+        validators=[FileExtensionValidator(['mp3', 'wav', 'jpg', 'png'])],
         upload_to='files',
         verbose_name='File'
     )

@@ -1,11 +1,11 @@
 from django.contrib.auth import get_user_model, login
 from django.http import JsonResponse, HttpResponse
 from rest_framework import generics
-from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializer import *
 from .models import *
+from django import forms
 
 
 # auth
@@ -108,21 +108,21 @@ class UserPlaylistUpdate(generics.UpdateAPIView):
 
         return JsonResponse(serializer_class.data)
 
-
 class UploadFileCRUD(generics.UpdateAPIView):
-    # parser_classes = (FormParser, )
-
-    def get(self, request, *args, **kwargs):
-        queryset = UploadFile.objects.get(uuid=self.kwargs['uuid'])
-        serializer_class = UploadFileSerializer(queryset)
-
-        return JsonResponse(serializer_class.data, safe=False)
-
+    # def get(self, request, *args, **kwargs):
+    #     queryset = UploadFile.objects.get(uuid=self.kwargs['uuid'])
+    #     serializer_class = UploadFileSerializer(queryset)
+    #
+    #     return JsonResponse(serializer_class.data, safe=False)
     def post(self, request, *args, **kwargs):
         if request.FILES:
-            uploaded_file = "request.get('file')"
-            print('gg', request.get('file'))
-            return HttpResponse(uploaded_file)
+            uploaded_file = request.FILES['file']
+            form = UploadFileForm(request.POST, request.FILES)
+            serializer_class = UploadFileSerializer(form)
+
+            if form.is_valid():
+                form.save()
+                return JsonResponse(serializer_class.data, safe=False)
         else:
             return HttpResponse("Err")
         queryset = UploadFile.objects.create(file=uploaded_file)
@@ -132,6 +132,15 @@ class UploadFileCRUD(generics.UpdateAPIView):
 
         return JsonResponse(serializer_class.data)
 
+class UploadFileForm(forms.Form):
+    title = forms.CharField(max_length=50)
+    file = models.FileField(
+        null=False,
+        blank=False,
+        validators=[FileExtensionValidator(['mp3', 'wav', 'jpg', 'png'])],
+        upload_to='files',
+        verbose_name='File'
+    )
 
 class ArtistsListView(generics.ListAPIView):
     queryset = Artist.objects.all()

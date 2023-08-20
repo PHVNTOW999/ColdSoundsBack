@@ -34,8 +34,8 @@ urlpatterns = [
     path('api/playlists/', AllPlaylistsView.as_view(), name='playlists_list'),
     path('api/user-playlist/<str:email>/', UserPlaylistView.as_view(), name='user_playlist_list'),
     path('api/update-playlist/<uuid:uuid>/', UserPlaylistUpdate.as_view(), name='edit_user_playlist'),
-
-    path('api/files/', UploadFilesListView.as_view(), name='files_list'),
-    path('api/upload-file/', UploadFileCRUD.as_view(), name='file_crud'),
+    # files
+    path('api/audio-file/', AudioFileView.as_view(), name='audio_file'),
+    path('api/img-file/', ImgFileView.as_view(), name='img_file'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -37,8 +37,15 @@ class PlaylistSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class UploadFileSerializer(serializers.ModelSerializer):
+class AudioFileSerializer(serializers.ModelSerializer):
     class Meta:
-        model = UploadFile
+        model = AudioFile
+        depth = 1
+        fields = "__all__"
+
+
+class ImgFileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ImgFile
         depth = 1
         fields = "__all__"

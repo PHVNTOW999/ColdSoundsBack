@@ -108,38 +108,79 @@ class UserPlaylistUpdate(generics.UpdateAPIView):
 
         return JsonResponse(serializer_class.data)
 
-class UploadFileCRUD(generics.UpdateAPIView):
+class AudioFileView(generics.UpdateAPIView):
     # def get(self, request, *args, **kwargs):
     #     queryset = UploadFile.objects.get(uuid=self.kwargs['uuid'])
     #     serializer_class = UploadFileSerializer(queryset)
     #
     #     return JsonResponse(serializer_class.data, safe=False)
+
     def post(self, request, *args, **kwargs):
         if request.FILES:
             uploaded_file = request.FILES['file']
-            form = UploadFileForm(request.POST, request.FILES)
-            serializer_class = UploadFileSerializer(form)
+            form = UploadAudioFileForm(request.POST, request.FILES)
+            serializer_class = AudioFileSerializer(form)
 
             if form.is_valid():
                 form.save()
+
                 return JsonResponse(serializer_class.data, safe=False)
-        else:
-            return HttpResponse("Err")
-        queryset = UploadFile.objects.create(file=uploaded_file)
+        # else:
+        #     return JsonResponse("Err", safe=False)
+
+        queryset = AudioFile.objects.create(file=uploaded_file)
         queryset.save()
 
-        serializer_class = UploadFileSerializer(queryset)
+        serializer_class = AudioFileSerializer(queryset)
 
-        return JsonResponse(serializer_class.data)
+        return JsonResponse(serializer_class.data, safe=False)
 
-class UploadFileForm(forms.Form):
+class UploadAudioFileForm(forms.Form):
     title = forms.CharField(max_length=50)
     file = models.FileField(
         null=False,
         blank=False,
-        validators=[FileExtensionValidator(['mp3', 'wav', 'jpg', 'png'])],
-        upload_to='files',
-        verbose_name='File'
+        validators=[FileExtensionValidator(['mp3', 'wav'])],
+        upload_to='audio',
+        verbose_name='Audio File'
+    )
+
+class ImgFileView(generics.UpdateAPIView):
+    # def get(self, request, *args, **kwargs):
+    #     queryset = UploadFile.objects.get(uuid=self.kwargs['uuid'])
+    #     serializer_class = UploadFileSerializer(queryset)
+    #
+    #     return JsonResponse(serializer_class.data, safe=False)
+
+    def post(self, request, *args, **kwargs):
+        if request.FILES:
+            uploaded_file = request.FILES['file']
+            print(uploaded_file)
+            form = UploadImgFileForm(request.POST, request.FILES)
+            serializer_class = ImgFileSerializer(form)
+
+            if form.is_valid():
+                form.save()
+
+                return JsonResponse(serializer_class.data, safe=False)
+        # else:
+        #     return JsonResponse("Err", safe=False)
+
+        queryset = ImgFile.objects.create(file=uploaded_file)
+        queryset.save()
+
+        serializer_class = ImgFileSerializer(queryset)
+
+        return JsonResponse(serializer_class.data, safe=False)
+
+class UploadImgFileForm(forms.Form):
+    title = forms.CharField(max_length=50)
+    file = models.ImageField(
+        null=False,
+        blank=False,
+        validators=[FileExtensionValidator(['jpg', 'png'])],
+        upload_to='img',
+        verbose_name='Image File'
     )
 
 class ArtistsListView(generics.ListAPIView):
@@ -160,8 +201,3 @@ class SingleView(generics.ListAPIView):
 class AllPlaylistsView(generics.ListAPIView):
     queryset = Playlist.objects.all()
     serializer_class = PlaylistSerializer
-
-
-class UploadFilesListView(generics.ListAPIView):
-    queryset = UploadFile.objects.all()
-    serializer_class = UploadFileSerializer

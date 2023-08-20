@@ -5,31 +5,58 @@ from django.db import models
 from django.db.models import CASCADE
 
 
-class UploadFile(models.Model):
-    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
+class AudioFile(models.Model):
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
-    req = models.CharField(
-        default="file",
+    format = models.CharField(
+        default="audio",
         max_length=155,
         null=False,
         blank=False,
-        verbose_name="Req"
+        verbose_name="Format"
     )
 
     file = models.FileField(
         null=False,
         blank=False,
-        validators=[FileExtensionValidator(['mp3', 'wav', 'jpg', 'png'])],
-        upload_to='files',
-        verbose_name='File'
+        validators=[FileExtensionValidator(['mp3', 'wav'])],
+        upload_to='audio',
+        verbose_name='Audio File'
     )
 
     class Meta:
-        verbose_name = 'File'
-        verbose_name_plural = 'Files'
+        verbose_name = 'Audio File'
+        verbose_name_plural = 'Audio Files'
 
     def __str__(self):
-        return self.req
+        return self.format
+
+
+class ImgFile(models.Model):
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+    format = models.CharField(
+        default="img",
+        max_length=155,
+        null=False,
+        blank=False,
+        verbose_name="Format"
+    )
+
+    file = models.ImageField(
+        null=False,
+        blank=False,
+        validators=[FileExtensionValidator(['jpg', 'png'])],
+        upload_to='img',
+        verbose_name='Image File'
+    )
+
+    class Meta:
+        verbose_name = 'Image File'
+        verbose_name_plural = 'Image Files'
+
+    def __str__(self):
+        return self.format
 
 
 class Artist(models.Model):
@@ -42,10 +69,12 @@ class Artist(models.Model):
         verbose_name="Name"
     )
 
-    avatar = models.ImageField(
-        null=True,
-        blank=True,
-        verbose_name="Avatar"
+    avatar = models.ForeignKey(
+        ImgFile,
+        null=False,
+        blank=False,
+        unique=False,
+        on_delete=CASCADE
     )
 
     class Meta:
@@ -59,11 +88,12 @@ class Artist(models.Model):
 class Single(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
 
-    cover = models.ImageField(
-        validators=[FileExtensionValidator(['png', 'jpg'])],
-        upload_to='img',
-        blank=True,
-        verbose_name='Single Cover',
+    cover = models.ForeignKey(
+        ImgFile,
+        null=False,
+        blank=False,
+        unique=False,
+        on_delete=CASCADE
     )
 
     name = models.CharField(
@@ -140,10 +170,12 @@ class Album(models.Model):
         verbose_name="Name"
     )
 
-    cover = models.ImageField(
-        null=True,
-        blank=True,
-        verbose_name="Cover"
+    cover = models.ForeignKey(
+        ImgFile,
+        null=False,
+        blank=False,
+        unique=False,
+        on_delete=CASCADE
     )
 
     artists = models.ManyToManyField(
@@ -197,10 +229,12 @@ class Playlist(models.Model):
         on_delete=CASCADE
     )
 
-    cover = models.ImageField(
-        null=True,
-        blank=True,
-        verbose_name="Cover",
+    cover = models.ForeignKey(
+        ImgFile,
+        null=False,
+        blank=False,
+        unique=False,
+        on_delete=CASCADE
     )
 
     files = models.ManyToManyField(

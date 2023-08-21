@@ -6,7 +6,7 @@ from django.db.models import CASCADE
 
 
 class AudioFile(models.Model):
-    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
 
     format = models.CharField(
         default="audio",
@@ -33,7 +33,7 @@ class AudioFile(models.Model):
 
 
 class ImgFile(models.Model):
-    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
 
     format = models.CharField(
         default="img",
@@ -60,7 +60,7 @@ class ImgFile(models.Model):
 
 
 class Artist(models.Model):
-    uuid = models.UUIDField(primary_key=True, default=uuid.uuid1(), editable=False)
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
 
     name = models.CharField(
         max_length=155,
@@ -71,8 +71,8 @@ class Artist(models.Model):
 
     avatar = models.ForeignKey(
         ImgFile,
-        null=False,
-        blank=False,
+        null=True,
+        blank=True,
         unique=False,
         on_delete=CASCADE
     )
@@ -86,7 +86,7 @@ class Artist(models.Model):
 
 
 class Single(models.Model):
-    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
 
     cover = models.ForeignKey(
         ImgFile,
@@ -161,7 +161,7 @@ class Single(models.Model):
 
 
 class Album(models.Model):
-    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
 
     name = models.CharField(
         max_length=155,
@@ -212,7 +212,7 @@ class Album(models.Model):
 
 
 class Playlist(models.Model):
-    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=False)
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
 
     name = models.CharField(
         max_length=155,

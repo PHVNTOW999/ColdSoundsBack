@@ -3,6 +3,20 @@ from rest_framework import serializers
 from .models import *
 
 
+class AudioFileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AudioFile
+        depth = 1
+        fields = "__all__"
+
+
+class ImgFileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ImgFile
+        depth = 1
+        fields = "__all__"
+
+
 class ArtistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Artist
@@ -29,23 +43,10 @@ class SingleSerializer(serializers.ModelSerializer):
 
 
 class PlaylistSerializer(serializers.ModelSerializer):
+    files = SingleSerializer(many=True)
     format = serializers.CharField(default='Playlist')
 
     class Meta:
         model = Playlist
-        depth = 1
-        fields = "__all__"
-
-
-class AudioFileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = AudioFile
-        depth = 1
-        fields = "__all__"
-
-
-class ImgFileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ImgFile
         depth = 1
         fields = "__all__"

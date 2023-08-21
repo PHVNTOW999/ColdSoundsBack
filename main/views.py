@@ -92,7 +92,7 @@ class UserPlaylistUpdate(generics.UpdateAPIView):
             queryset.name = request.data['name']
 
         if request.data['cover']:
-            queryset.cover = request.data['cover']
+            queryset.cover = ImgFile.objects.get(uuid=queryset.cover.uuid)
 
         if request.data['files']:
             new_list = []

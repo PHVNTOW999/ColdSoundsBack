@@ -163,8 +163,6 @@ class ImgFileView(generics.UpdateAPIView):
                 form.save()
 
                 return JsonResponse(serializer_class.data, safe=False)
-        # else:
-        #     return JsonResponse("Err", safe=False)
 
         queryset = ImgFile.objects.create(file=uploaded_file)
         queryset.save()

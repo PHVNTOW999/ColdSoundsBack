@@ -56,7 +56,7 @@ class ImgFile(models.Model):
         verbose_name_plural = 'Image Files'
 
     def __str__(self):
-        return self.format
+        return f'{self.uuid}'
 
 
 class Artist(models.Model):

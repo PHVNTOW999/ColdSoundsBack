@@ -92,7 +92,8 @@ class UserPlaylistUpdate(generics.UpdateAPIView):
             queryset.name = request.data['name']
 
         if request.data['cover']:
-            queryset.cover = ImgFile.objects.get(uuid=queryset.cover.uuid)
+            newCover = request.data['cover']
+            queryset.cover = ImgFile.objects.get(uuid=newCover['uuid'])
 
         if request.data['files']:
             new_list = []
@@ -155,7 +156,6 @@ class ImgFileView(generics.UpdateAPIView):
     def post(self, request, *args, **kwargs):
         if request.FILES:
             uploaded_file = request.FILES['file']
-            print(uploaded_file)
             form = UploadImgFileForm(request.POST, request.FILES)
             serializer_class = ImgFileSerializer(form)
 

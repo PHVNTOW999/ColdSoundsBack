@@ -239,8 +239,8 @@ class Playlist(models.Model):
 
     files = models.ManyToManyField(
         Single,
-        null=False,
-        blank=False,
+        null=True,
+        blank=True,
         verbose_name="Singles",
         related_name="playlist_singles",
     )

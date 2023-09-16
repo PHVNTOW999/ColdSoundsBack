@@ -1,4 +1,6 @@
 import uuid
+from datetime import datetime
+
 from django.contrib.auth.models import User
 from django.core.validators import FileExtensionValidator
 from django.db import models
@@ -245,7 +247,11 @@ class Playlist(models.Model):
         related_name="playlist_singles",
     )
 
-    date = models.DateField()
+    date = models.DateField(
+        default=datetime.now,
+        # null=True,
+        # blank=True,
+    )
 
     class Meta:
         verbose_name = 'Playlist'

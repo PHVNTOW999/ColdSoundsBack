@@ -109,6 +109,11 @@ class UserPlaylistUpdate(generics.UpdateAPIView):
 
         return JsonResponse(serializer_class.data)
 
+    def delete(self, request, *args, **kwargs):
+        queryset = Playlist.objects.get(uuid=self.kwargs['uuid']).delete()
+
+        return JsonResponse(queryset, safe=False)
+
 class AudioFileView(generics.UpdateAPIView):
     # def get(self, request, *args, **kwargs):
     #     queryset = UploadFile.objects.get(uuid=self.kwargs['uuid'])
